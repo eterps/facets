@@ -12,11 +12,17 @@ module Enumerable
     #   ["I had", 1, "dollar and", 50, "cents"].group_by { |e| e.class }
     #        #=> { String => ["I had","dollar and","cents"], Fixnum => [1,50] }
     #
-    # CREDIT: Erik Veenstra
+	# #group_by can be given an alternative Hash implementation, like Dictionary
+	# which preserves order.
+	#
+    #   ["I had", 1, "dollar and", 50, "cents"].group_by(Dictionary) { |e| e.class }
+    #        #=> { String => ["I had","dollar and","cents"], Fixnum => [1,50] }
+    #
+    # CREDIT: Erik Veenstra, Erik Terpstra
 
-    def group_by #:yield:
+    def group_by(dictionary = Hash) #:yield:
       #h = k = e = nil
-      r = Hash.new
+      r = dictionary.new
       each{ |e| (r[yield(e)] ||= []) << e }
       r
     end
